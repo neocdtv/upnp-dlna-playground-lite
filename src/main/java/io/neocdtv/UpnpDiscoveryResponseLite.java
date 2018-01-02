@@ -54,8 +54,8 @@ public class UpnpDiscoveryResponseLite extends Thread {
   @Override
   public void run() {
     try {
-      MulticastSocket socket = new MulticastSocket(SsdpConstants.BROADCAST_PORT);
-      InetAddress group = InetAddress.getByName(SsdpConstants.BROADCAST_IP);
+      MulticastSocket socket = new MulticastSocket(SsdpConstants.MULTICAST_PORT);
+      InetAddress group = InetAddress.getByName(SsdpConstants.MULTICAST_IP);
 
       socket.joinGroup(group);
 

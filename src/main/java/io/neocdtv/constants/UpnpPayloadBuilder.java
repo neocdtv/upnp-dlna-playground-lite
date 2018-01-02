@@ -34,63 +34,52 @@ public class UpnpPayloadBuilder {
         append(" ").
         append(status).
         // TODO: is OK at the end of the header required???
-        append(NEW_LINE);
+            append(NEW_LINE);
     return this;
   }
 
   public UpnpPayloadBuilder usn(final String usn) {
-    addHeader(SsdpConstants.HTTP_HEADER_NAME_UNIQUE_SERVICE_NAME, usn);
-    return this;
+    return addHeader(SsdpConstants.HTTP_HEADER_NAME_UNIQUE_SERVICE_NAME, usn);
   }
 
   public UpnpPayloadBuilder host(final String host) {
-    addHeader(HttpConstants.HTTP_HEADER_NAME_HOST, host);
-    return this;
+    return addHeader(HttpConstants.HTTP_HEADER_NAME_HOST, host);
   }
 
   public UpnpPayloadBuilder cacheControl(final String cacheControl) {
-    addHeader(HttpConstants.HTTP_HEADER_NAME_CACHE_CONTROL, cacheControl);
-    return this;
+    return addHeader(HttpConstants.HTTP_HEADER_NAME_CACHE_CONTROL, cacheControl);
   }
 
   public UpnpPayloadBuilder location(final String location) {
-    addHeader(HttpConstants.HTTP_HEADER_NAME_LOCATION, location);
-    return this;
+    return addHeader(HttpConstants.HTTP_HEADER_NAME_LOCATION, location);
   }
 
   public UpnpPayloadBuilder server(final String server) {
-    addHeader(HttpConstants.HTTP_HEADER_NAME_SERVER, server);
-    return this;
+    return addHeader(HttpConstants.HTTP_HEADER_NAME_SERVER, server);
   }
 
   public UpnpPayloadBuilder nt(final String nt) {
-    addHeader(GenaConstants.HTTP_HEADER_NAME_NOTIFICATION_TYPE, nt);
-    return this;
+    return addHeader(GenaConstants.HTTP_HEADER_NAME_NOTIFICATION_TYPE, nt);
   }
 
   public UpnpPayloadBuilder st(final String st) {
-    addHeader(UpnpHelper.ST, st);
-    return this;
+    return addHeader(UpnpHelper.ST, st);
   }
 
   public UpnpPayloadBuilder ext(final String ext) {
-    addHeader(UpnpHelper.EXT, ext);
-    return this;
+    return addHeader(UpnpHelper.EXT, ext);
   }
 
   public UpnpPayloadBuilder mx(final String mx) {
-    addHeader(UpnpHelper.MX, mx);
-    return this;
+    return addHeader(UpnpHelper.MX, mx);
   }
 
   public UpnpPayloadBuilder man(final String man) {
-    addHeader(UpnpHelper.MAN, man);
-    return this;
+    return addHeader(UpnpHelper.MAN, man);
   }
 
   public UpnpPayloadBuilder nts(final String st) {
-    addHeader(GenaConstants.HTTP_HEADER_NAME_NOTIFICATION_SUB_TYPE, st);
-    return this;
+    return addHeader(GenaConstants.HTTP_HEADER_NAME_NOTIFICATION_SUB_TYPE, st);
   }
 
 
@@ -100,11 +89,12 @@ public class UpnpPayloadBuilder {
         toString();
   }
 
-  public void addHeader(final String name, final String value) {
+  public UpnpPayloadBuilder addHeader(final String name, final String value) {
     response.
         append(name).
         append(": ").
         append(value).
         append(NEW_LINE);
+    return this;
   }
 }

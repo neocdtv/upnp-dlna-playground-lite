@@ -1,5 +1,6 @@
 package io.neocdtv;
 
+import io.neocdtv.constants.LeanPlayerConstants;
 import io.neocdtv.constants.SsdpConstants;
 import io.neocdtv.constants.UpnpHelper;
 import io.neocdtv.constants.UpnpPayloadFactory;
@@ -22,15 +23,15 @@ import java.util.logging.Logger;
 public class UpnpNotifyLite {
 
   private final String uuid;
-  private final String location;
+  private final String baseUrl;
 
-  public UpnpNotifyLite(String uuid, String location) {
+  public UpnpNotifyLite(String uuid, String baseUrl) {
     this.uuid = uuid;
-    this.location = location;
+    this.baseUrl = baseUrl;
   }
 
   public static void main(String[] args) throws InterruptedException {
-    startIt(UpnpHelper.buildUuid(), "http://dummy.com/spec.xml");
+    startIt(UpnpHelper.buildUuid(), "http://dummy.com/appUrl");
   }
 
   public static void startIt(final String uuid, final String location) {
@@ -41,7 +42,7 @@ public class UpnpNotifyLite {
   public void sendNotification() {
 
     try {
-      InetAddress broadcastAddress = InetAddress.getByName(SsdpConstants.BROADCAST_IP);
+      InetAddress broadcastAddress = InetAddress.getByName(SsdpConstants.MULTICAST_IP);
       final DatagramSocket datagramSocket = new DatagramSocket();
       datagramSocket.setBroadcast(true);
       datagramSocket.setReuseAddress(true);
@@ -49,16 +50,22 @@ public class UpnpNotifyLite {
       UpnpPayloadFactory upnpPayloadFactory = UpnpPayloadFactory.
           create(uuid);
 
-      sendNotification(broadcastAddress, datagramSocket, upnpPayloadFactory.createZenplayerNotifyRequest(location, "zenplayer"));
+      sendNotification(
+          broadcastAddress,
+          datagramSocket,
+          upnpPayloadFactory.createLeanPlayerNotifyRequest(
+              baseUrl + "/desc.json", // TODO: currently not used at all
+              LeanPlayerConstants.NAME,
+              baseUrl + "/rs/control",
+              baseUrl + "/events"));
 
     } catch (IOException ex) {
       Logger.getLogger(UpnpNotifyLite.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
-
   private void sendNotification(InetAddress multicastAddress, DatagramSocket datagramSocket, String payload) throws IOException {
     byte[] payloadBytes = payload.getBytes(StandardCharsets.UTF_8.name());
-    DatagramPacket datagramPacket = new DatagramPacket(payloadBytes, payloadBytes.length, multicastAddress, SsdpConstants.BROADCAST_PORT);
+    DatagramPacket datagramPacket = new DatagramPacket(payloadBytes, payloadBytes.length, multicastAddress, SsdpConstants.MULTICAST_PORT);
     datagramSocket.send(datagramPacket);
     TrafficLogger.logSent(payload);
   }

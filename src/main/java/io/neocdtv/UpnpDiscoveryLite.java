@@ -48,20 +48,20 @@ public class UpnpDiscoveryLite extends Thread {
   public void run() {
 
     try {
-      InetAddress multicastAddress = Inet4Address.getByName(SsdpConstants.BROADCAST_IP);
-      final DatagramSocket msocket = new DatagramSocket();
-      msocket.setBroadcast(true);
-      msocket.setReuseAddress(true);
+      InetAddress multicastAddress = Inet4Address.getByName(SsdpConstants.MULTICAST_IP);
+      final DatagramSocket datagramSocket = new DatagramSocket();
+      datagramSocket.setBroadcast(true);
+      datagramSocket.setReuseAddress(true);
 
       UpnpPayloadFactory upnpPayloadFactory = UpnpPayloadFactory.
           create(uuid);
-      send(multicastAddress, msocket, upnpPayloadFactory.createMediaRendererDiscoveryRequest());
+      send(multicastAddress, datagramSocket, upnpPayloadFactory.createMediaRendererDiscoveryRequest());
 
       while (true) {
-        byte[] inbuf = new byte[NetworkConstants.BUFFER_SIZE];
-        DatagramPacket packet = new DatagramPacket(inbuf, inbuf.length);
+        byte[] bytes = new byte[NetworkConstants.BUFFER_SIZE];
+        DatagramPacket packet = new DatagramPacket(bytes, bytes.length);
 
-        final String receivedMessage = receiveMessage(msocket, inbuf, packet);
+        final String receivedMessage = receiveMessage(datagramSocket, bytes, packet);
         TrafficLogger.logReceived(receivedMessage);
 
         String deviceAddress = packet.getAddress().getHostAddress();
@@ -89,7 +89,7 @@ public class UpnpDiscoveryLite extends Thread {
 
   private static void send(final InetAddress broadcastAddress, final DatagramSocket datagramSocket, final String payload) throws IOException {
     byte[] payloadBytes = payload.getBytes(StandardCharsets.UTF_8.displayName());
-    DatagramPacket datagramPacket = new DatagramPacket(payloadBytes, payloadBytes.length, broadcastAddress, SsdpConstants.BROADCAST_PORT);
+    DatagramPacket datagramPacket = new DatagramPacket(payloadBytes, payloadBytes.length, broadcastAddress, SsdpConstants.MULTICAST_PORT);
     datagramSocket.send(datagramPacket);
     TrafficLogger.logSent(payload);
   }
