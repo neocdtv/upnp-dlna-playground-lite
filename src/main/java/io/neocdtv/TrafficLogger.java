@@ -13,10 +13,10 @@ public class TrafficLogger {
   private final static Logger LOGGER = Logger.getLogger(TrafficLogger.class.getName());
 
   public static void logSent(final String sent) {
-    LOGGER.log(Level.INFO, "<-:\n" + sent);
+    LOGGER.log(Level.INFO, "sending:\n" + sent);
   }
 
   public static void logReceived(final String received) {
-    LOGGER.log(Level.INFO, "->\n" + received);
+    LOGGER.log(Level.INFO, "receiving\n" + received);
   }
 }

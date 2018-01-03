@@ -12,7 +12,7 @@ public class UpnpHelper {
 
   public final static String ROOT_DEVICE = "upnp:rootdevice";
   public final static String MEDIA_RENDERER = "urn:schemas-upnp-org:device:MediaRenderer:1";
-  public final static String MEDIA_RENDERER_LEANPLAYER = "urn:schemas-upnp-org:device:MediaRenderer:1:LayereanPlayer";
+  public final static String MEDIA_RENDERER_LEANPLAYER = "urn:schemas-upnp-org:device:LeanPlayer:1";
   public final static String AV_TRANSPORT = "urn:schemas-upnp-org:service:AVTransport:1";
   public final static String RENDERING_CONTROL = "urn:schemas-upnp-org:service:RenderingControl:1";
   public final static String CONNECTION_MANAGER = "urn:schemas-upnp-org:service:ConnectionManager:1";

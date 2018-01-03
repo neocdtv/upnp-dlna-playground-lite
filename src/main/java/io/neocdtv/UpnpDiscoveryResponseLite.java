@@ -1,6 +1,8 @@
 package io.neocdtv;
 
 import io.neocdtv.constants.GenaConstants;
+import io.neocdtv.constants.LeanPlayerConstants;
+import io.neocdtv.constants.LocationHelper;
 import io.neocdtv.constants.NetworkConstants;
 import io.neocdtv.constants.SsdpConstants;
 import io.neocdtv.constants.UpnpHelper;
@@ -24,11 +26,11 @@ import java.util.logging.Logger;
 public class UpnpDiscoveryResponseLite extends Thread {
 
   private String uuid;
-  private String location;
+  private String baseUrl;
   private String serverName;
 
-  public void setLocation(String location) {
-    this.location = location;
+  public void setBaseUrl(String baseUrl) {
+    this.baseUrl = baseUrl;
   }
 
   public void setServerName(String serverName) {
@@ -40,13 +42,13 @@ public class UpnpDiscoveryResponseLite extends Thread {
   }
 
   public static void main(String[] args) throws InterruptedException {
-    startIt(UpnpHelper.buildUuid(),"http://localhost/device-description", "Zenplayer Version 0.1");
+    startIt(UpnpHelper.buildUuid(),"localhost", LeanPlayerConstants.NAME);
   }
 
   public static void startIt(final String uuid, final String location, final String serverName) {
     final UpnpDiscoveryResponseLite UpnpDiscoveryResponseLite = new UpnpDiscoveryResponseLite();
     UpnpDiscoveryResponseLite.setUuid(uuid);
-    UpnpDiscoveryResponseLite.setLocation(location);
+    UpnpDiscoveryResponseLite.setBaseUrl(location);
     UpnpDiscoveryResponseLite.setServerName(serverName);
     UpnpDiscoveryResponseLite.start();
   }
@@ -68,15 +70,15 @@ public class UpnpDiscoveryResponseLite extends Thread {
         TrafficLogger.logReceived(receivedMessage);
 
         if (receivedMessage.contains(GenaConstants.HTTP_METHOD_SEARCH) &&
-            receivedMessage.contains(UpnpHelper.MEDIA_RENDERER)) {
-          UpnpPayloadFactory.create(uuid).createMediaRendererDiscoveryResponse(location, serverName);
+            receivedMessage.contains(UpnpHelper.MEDIA_RENDERER_LEANPLAYER)) {
+          final String discoveryResponse =
+              UpnpPayloadFactory.create(uuid).createLeanPlayerDiscoveryResponse(
+                  LocationHelper.buildLocation(baseUrl), // TODO: currently not used at all
+                  LeanPlayerConstants.NAME,
+                  LocationHelper.buildControlLocation(baseUrl),
+                  LocationHelper.buildEventsLocation(baseUrl));
 
-          // get ip address of recipient
-          String responseRecipientAddress = packet.getAddress().getHostAddress();
-          // get port of recipient
-
-          // send response
-
+          send(packet.getAddress(), packet.getPort(), discoveryResponse);
         }
       }
     } catch (IOException ex) {

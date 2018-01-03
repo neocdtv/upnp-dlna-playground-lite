@@ -1,6 +1,7 @@
 package io.neocdtv;
 
 import io.neocdtv.constants.LeanPlayerConstants;
+import io.neocdtv.constants.LocationHelper;
 import io.neocdtv.constants.SsdpConstants;
 import io.neocdtv.constants.UpnpHelper;
 import io.neocdtv.constants.UpnpPayloadFactory;
@@ -31,11 +32,11 @@ public class UpnpNotifyLite {
   }
 
   public static void main(String[] args) throws InterruptedException {
-    startIt(UpnpHelper.buildUuid(), "http://dummy.com/appUrl");
+    startIt(UpnpHelper.buildUuid(), "dummy.com/appUrl");
   }
 
-  public static void startIt(final String uuid, final String location) {
-    final UpnpNotifyLite upnpNotifyLite = new UpnpNotifyLite(uuid, location);
+  public static void startIt(final String uuid, final String baseUrl) {
+    final UpnpNotifyLite upnpNotifyLite = new UpnpNotifyLite(uuid, baseUrl);
     upnpNotifyLite.sendNotification();
   }
 
@@ -54,15 +55,16 @@ public class UpnpNotifyLite {
           broadcastAddress,
           datagramSocket,
           upnpPayloadFactory.createLeanPlayerNotifyRequest(
-              baseUrl + "/desc.json", // TODO: currently not used at all
+              LocationHelper.buildLocation(baseUrl), // TODO: currently not used at all
               LeanPlayerConstants.NAME,
-              baseUrl + "/rs/control",
-              baseUrl + "/events"));
+              LocationHelper.buildControlLocation(baseUrl),
+              LocationHelper.buildEventsLocation(baseUrl)));
 
     } catch (IOException ex) {
       Logger.getLogger(UpnpNotifyLite.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
+
   private void sendNotification(InetAddress multicastAddress, DatagramSocket datagramSocket, String payload) throws IOException {
     byte[] payloadBytes = payload.getBytes(StandardCharsets.UTF_8.name());
     DatagramPacket datagramPacket = new DatagramPacket(payloadBytes, payloadBytes.length, multicastAddress, SsdpConstants.MULTICAST_PORT);

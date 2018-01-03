@@ -58,14 +58,17 @@ public class UpnpPayloadFactory {
   }
 
   public String createMediaRendererDiscoveryResponse(final String location, final String serverName) {
-    return createDiscoveryResponse(location, serverName, UpnpHelper.MEDIA_RENDERER);
+    return createDiscoveryResponse(location, serverName, UpnpHelper.MEDIA_RENDERER).build();
   }
 
-  public String createLeanPlayerDiscoveryResponse(final String location, final String serverName) {
-    return createDiscoveryResponse(location, serverName, UpnpHelper.MEDIA_RENDERER_LEANPLAYER);
+  public String createLeanPlayerDiscoveryResponse(final String location, final String serverName, final String controlLocation, final String eventLocation) {
+    return createDiscoveryResponse(location, serverName, UpnpHelper.MEDIA_RENDERER_LEANPLAYER).
+        addHeader(LeanPlayerConstants.HTTP_HEADER_NAME_CONTROL_LOCATION, controlLocation).
+        addHeader(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION, eventLocation).
+        build();
   }
 
-  private String createDiscoveryResponse(String location, String server, String deviceType) {
+  private UpnpPayloadBuilder createDiscoveryResponse(String location, String server, String deviceType) {
     return UpnpPayloadBuilder.
         create().
         status("200"). // TODO check if this is correct
@@ -74,8 +77,7 @@ public class UpnpPayloadFactory {
         location(location).
         server(server).
         ext("").
-        st(UpnpHelper.MEDIA_RENDERER).
-        build();
+        st(UpnpHelper.MEDIA_RENDERER);
   }
 
   public String createMediaRendererShutdownRequest() {
