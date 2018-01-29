@@ -29,13 +29,13 @@ public class UpnpDiscoveryLite extends Thread {
   private String uuid;
 
   public static void main(String[] args) throws InterruptedException {
-    startIt(new EventsHandlerDefault());
+    startIt(new EventsHandlerDefault(), UpnpHelper.buildUuid());
   }
 
-  public static void startIt(final EventsHandler eventsHandler) {
+  public static void startIt(final EventsHandler eventsHandler, final String uuid) {
     UpnpDiscoveryLite upnpDiscoveryLite = new UpnpDiscoveryLite();
     upnpDiscoveryLite.setEventsHandler(eventsHandler);
-    upnpDiscoveryLite.setUuid(UpnpHelper.buildUuid());
+    upnpDiscoveryLite.setUuid(uuid);
     upnpDiscoveryLite.start();
   }
 
@@ -58,7 +58,7 @@ public class UpnpDiscoveryLite extends Thread {
 
       UpnpPayloadFactory upnpPayloadFactory = UpnpPayloadFactory.
           create(uuid);
-      send(multicastAddress, datagramSocket, upnpPayloadFactory.createLeanPlayerDiscoveryRequest());
+      send(multicastAddress, datagramSocket, upnpPayloadFactory.createMediaRendererDiscoveryRequest());
 
       while (true) {
         byte[] bytes = new byte[NetworkConstants.BUFFER_SIZE];
@@ -70,6 +70,7 @@ public class UpnpDiscoveryLite extends Thread {
         // TODO: is device address getting from packet.getAddress().getHostAddress() and adding to location, controlLocation, eventsLocation
         // or get just the absolute addresses in location, controlLocation, eventsLocation
         String deviceAddress = packet.getAddress().getHostAddress();
+        // TODO: check that received message is a response from leanplayer-renderer
         final String deviceName = extractDeviceName(receivedMessage);
         final String location = extractLocation(receivedMessage);
         final String controlLocation = extractControlLocation(receivedMessage);
@@ -97,9 +98,9 @@ public class UpnpDiscoveryLite extends Thread {
     return HeaderHelper.extractHeader(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION, receivedMessage);
   }
 
-  private String receiveMessage(DatagramSocket msocket, byte[] inbuf, DatagramPacket packet) throws IOException {
+  private String receiveMessage(DatagramSocket msocket, byte[] bytes, DatagramPacket packet) throws IOException {
     msocket.receive(packet);
-    return new String(inbuf, 0, packet.getLength());
+    return new String(bytes, 0, packet.getLength());
   }
 
   private static void send(final InetAddress broadcastAddress, final DatagramSocket datagramSocket, final String payload) throws IOException {

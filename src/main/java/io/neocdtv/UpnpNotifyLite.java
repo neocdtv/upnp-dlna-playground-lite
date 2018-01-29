@@ -32,7 +32,7 @@ public class UpnpNotifyLite {
   }
 
   public static void main(String[] args) throws InterruptedException {
-    startIt(UpnpHelper.buildUuid(), "dummy.com/appUrl");
+    startIt(UpnpHelper.buildUuid(), "localhost:1234/appUrl");
   }
 
   public static void startIt(final String uuid, final String baseUrl) {
@@ -55,7 +55,7 @@ public class UpnpNotifyLite {
           broadcastAddress,
           datagramSocket,
           upnpPayloadFactory.createLeanPlayerNotifyRequest(
-              LocationHelper.buildLocation(baseUrl), // TODO: currently not used at all
+              LocationHelper.buildLocation(baseUrl), // TODO: currently not used at all. Also no description is available
               LeanPlayerConstants.NAME,
               LocationHelper.buildControlLocation(baseUrl),
               LocationHelper.buildEventsLocation(baseUrl)));

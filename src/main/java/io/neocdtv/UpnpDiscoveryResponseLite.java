@@ -27,14 +27,9 @@ public class UpnpDiscoveryResponseLite extends Thread {
 
   private String uuid;
   private String baseUrl;
-  private String serverName;
 
   public void setBaseUrl(String baseUrl) {
     this.baseUrl = baseUrl;
-  }
-
-  public void setServerName(String serverName) {
-    this.serverName = serverName;
   }
 
   public void setUuid(String uuid) {
@@ -42,14 +37,13 @@ public class UpnpDiscoveryResponseLite extends Thread {
   }
 
   public static void main(String[] args) throws InterruptedException {
-    startIt(UpnpHelper.buildUuid(),"localhost", LeanPlayerConstants.NAME);
+    startIt(UpnpHelper.buildUuid(),"localhost:1234");
   }
 
-  public static void startIt(final String uuid, final String location, final String serverName) {
+  public static void startIt(final String uuid, final String baseUrl) {
     final UpnpDiscoveryResponseLite UpnpDiscoveryResponseLite = new UpnpDiscoveryResponseLite();
     UpnpDiscoveryResponseLite.setUuid(uuid);
-    UpnpDiscoveryResponseLite.setBaseUrl(location);
-    UpnpDiscoveryResponseLite.setServerName(serverName);
+    UpnpDiscoveryResponseLite.setBaseUrl(baseUrl);
     UpnpDiscoveryResponseLite.start();
   }
 
@@ -70,7 +64,9 @@ public class UpnpDiscoveryResponseLite extends Thread {
         TrafficLogger.logReceived(receivedMessage);
 
         if (receivedMessage.contains(GenaConstants.HTTP_METHOD_SEARCH) &&
-            receivedMessage.contains(UpnpHelper.MEDIA_RENDERER_LEANPLAYER)) {
+            receivedMessage.contains(UpnpHelper.MEDIA_RENDERER) &&
+            receivedMessage.contains(LeanPlayerConstants.HTTP_HEADER_NAME_CONTROL_LOCATION) &&
+            receivedMessage.contains(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION)) {
           final String discoveryResponse =
               UpnpPayloadFactory.create(uuid).createLeanPlayerDiscoveryResponse(
                   LocationHelper.buildLocation(baseUrl), // TODO: currently not used at all

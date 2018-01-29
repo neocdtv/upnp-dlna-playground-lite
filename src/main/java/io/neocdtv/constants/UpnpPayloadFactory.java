@@ -19,7 +19,7 @@ public class UpnpPayloadFactory {
 
 
   public String createLeanPlayerNotifyRequest(final String location, final String name, final String controlLocation, final String eventLocation) {
-    return createNotifyRequest(location, name, UpnpHelper.MEDIA_RENDERER_LEANPLAYER).
+    return createNotifyRequest(location, name, UpnpHelper.MEDIA_RENDERER).
         addHeader(LeanPlayerConstants.HTTP_HEADER_NAME_CONTROL_LOCATION, controlLocation).
         addHeader(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION, eventLocation).
         build();
@@ -42,10 +42,6 @@ public class UpnpPayloadFactory {
     return createDiscoveryRequest(UpnpHelper.MEDIA_RENDERER);
   }
 
-  public String createLeanPlayerDiscoveryRequest() {
-    return createDiscoveryRequest(UpnpHelper.MEDIA_RENDERER_LEANPLAYER);
-  }
-
   private String createDiscoveryRequest(final String deviceType) {
     return UpnpPayloadBuilder.
         create().
@@ -62,7 +58,7 @@ public class UpnpPayloadFactory {
   }
 
   public String createLeanPlayerDiscoveryResponse(final String location, final String serverName, final String controlLocation, final String eventLocation) {
-    return createDiscoveryResponse(location, serverName, UpnpHelper.MEDIA_RENDERER_LEANPLAYER).
+    return createDiscoveryResponse(location, serverName, UpnpHelper.MEDIA_RENDERER).
         addHeader(LeanPlayerConstants.HTTP_HEADER_NAME_CONTROL_LOCATION, controlLocation).
         addHeader(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION, eventLocation).
         build();
