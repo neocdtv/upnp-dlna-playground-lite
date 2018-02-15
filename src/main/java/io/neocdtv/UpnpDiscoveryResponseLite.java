@@ -41,10 +41,10 @@ public class UpnpDiscoveryResponseLite extends Thread {
   }
 
   public static void startIt(final String uuid, final String baseUrl) {
-    final UpnpDiscoveryResponseLite UpnpDiscoveryResponseLite = new UpnpDiscoveryResponseLite();
-    UpnpDiscoveryResponseLite.setUuid(uuid);
-    UpnpDiscoveryResponseLite.setBaseUrl(baseUrl);
-    UpnpDiscoveryResponseLite.start();
+    final UpnpDiscoveryResponseLite upnpDiscoveryResponseLite = new UpnpDiscoveryResponseLite();
+    upnpDiscoveryResponseLite.setUuid(uuid);
+    upnpDiscoveryResponseLite.setBaseUrl(baseUrl);
+    upnpDiscoveryResponseLite.start();
   }
 
   @Override
@@ -64,9 +64,7 @@ public class UpnpDiscoveryResponseLite extends Thread {
         TrafficLogger.logReceived(receivedMessage);
 
         if (receivedMessage.contains(GenaConstants.HTTP_METHOD_SEARCH) &&
-            receivedMessage.contains(UpnpHelper.MEDIA_RENDERER) &&
-            receivedMessage.contains(LeanPlayerConstants.HTTP_HEADER_NAME_CONTROL_LOCATION) &&
-            receivedMessage.contains(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION)) {
+            receivedMessage.contains(UpnpHelper.MEDIA_RENDERER)) {
           final String discoveryResponse =
               UpnpPayloadFactory.create(uuid).createLeanPlayerDiscoveryResponse(
                   LocationHelper.buildLocation(baseUrl), // TODO: currently not used at all

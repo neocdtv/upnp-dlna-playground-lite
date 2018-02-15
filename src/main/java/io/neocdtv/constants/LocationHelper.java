@@ -11,8 +11,9 @@ public class LocationHelper {
     return "http://" + baseUrl + "/desc.json";
   }
 
+  // TODO: hardcoded api/control needs to be configured dynamically
   public static String buildControlLocation(final String baseUrl) {
-    return "http://" + baseUrl + "/rs/control";
+    return "http://" + baseUrl + "/api/control";
   }
 
   public static String buildEventsLocation(final String baseUrl) {

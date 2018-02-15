@@ -16,15 +16,16 @@ public class HeaderHelper {
     List<String> headerLines = Arrays.asList(headers.split("\n"));
     for (final String headerLine: headerLines) {
       if (headerLine != null) {
-        final String headerLineStart = name + ":";
+        final String headerLineStart = name + ":"; // TODO: pretty unsecure, isn't it???
         if (headerLine.startsWith(headerLineStart)) {
-          return headerLine.trim().replaceFirst(headerLineStart, "");
+          return headerLine.trim().replaceFirst(headerLineStart, "").trim();
         }
       }
     }
     return value;
   }
 
+  // TODO: add unit test
   public static void main(String[] args) {
      final String message =   "HTTP/1.1 200\n" +
         "CACHE-CONTROL: no-cache\n" +

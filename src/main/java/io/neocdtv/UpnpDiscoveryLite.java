@@ -1,5 +1,6 @@
 package io.neocdtv;
 
+import io.neocdtv.constants.GenaConstants;
 import io.neocdtv.constants.HeaderHelper;
 import io.neocdtv.constants.HttpConstants;
 import io.neocdtv.constants.LeanPlayerConstants;
@@ -75,7 +76,12 @@ public class UpnpDiscoveryLite extends Thread {
         final String location = extractLocation(receivedMessage);
         final String controlLocation = extractControlLocation(receivedMessage);
         final String eventsLocation = extractEventsLocation(receivedMessage);
-        eventsHandler.onDeviceDiscovery(deviceName, location, controlLocation, eventsLocation);
+
+          if (receivedMessage.contains(UpnpHelper.MEDIA_RENDERER) &&
+              receivedMessage.contains(LeanPlayerConstants.HTTP_HEADER_NAME_CONTROL_LOCATION) &&
+              receivedMessage.contains(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION)) {
+            eventsHandler.onDeviceDiscovery(deviceName, location, controlLocation, eventsLocation);
+          }
       }
     } catch (IOException ex) {
       Logger.getLogger(UpnpDiscoveryLite.class.getName()).log(Level.SEVERE, null, ex);
