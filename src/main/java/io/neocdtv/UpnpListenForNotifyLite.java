@@ -58,11 +58,9 @@ public class UpnpListenForNotifyLite extends Thread {
             receivedMessage.contains(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION)) {
           final String deviceName = HeaderHelper.extractHeader(HttpConstants.HTTP_HEADER_NAME_SERVER, receivedMessage);
           final String controlLocation = HeaderHelper.extractHeader(LeanPlayerConstants.HTTP_HEADER_NAME_CONTROL_LOCATION, receivedMessage);
-          final String location = HeaderHelper.extractHeader(HttpConstants.HTTP_HEADER_NAME_LOCATION, receivedMessage);
           final String eventsLocation = HeaderHelper.extractHeader(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION, receivedMessage);
           eventsHandler.onDeviceDiscovery(
               deviceName,
-              location,
               controlLocation,
               eventsLocation
           );

@@ -71,16 +71,14 @@ public class UpnpDiscoveryLite extends Thread {
         // TODO: is device address getting from packet.getAddress().getHostAddress() and adding to location, controlLocation, eventsLocation
         // or get just the absolute addresses in location, controlLocation, eventsLocation
         String deviceAddress = packet.getAddress().getHostAddress();
-        // TODO: check that received message is a response from leanplayer-renderer
         final String deviceName = extractDeviceName(receivedMessage);
-        final String location = extractLocation(receivedMessage);
         final String controlLocation = extractControlLocation(receivedMessage);
         final String eventsLocation = extractEventsLocation(receivedMessage);
 
           if (receivedMessage.contains(UpnpHelper.MEDIA_RENDERER) &&
               receivedMessage.contains(LeanPlayerConstants.HTTP_HEADER_NAME_CONTROL_LOCATION) &&
               receivedMessage.contains(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION)) {
-            eventsHandler.onDeviceDiscovery(deviceName, location, controlLocation, eventsLocation);
+            eventsHandler.onDeviceDiscovery(deviceName, controlLocation, eventsLocation);
           }
       }
     } catch (IOException ex) {
@@ -90,10 +88,6 @@ public class UpnpDiscoveryLite extends Thread {
 
   private String extractDeviceName(final String receivedMessage) {
     return HeaderHelper.extractHeader(HttpConstants.HTTP_HEADER_NAME_SERVER, receivedMessage);
-  }
-
-  private String extractLocation(final String receivedMessage) {
-    return HeaderHelper.extractHeader(HttpConstants.HTTP_HEADER_NAME_LOCATION, receivedMessage);
   }
 
   private String extractControlLocation(final String receivedMessage) {
