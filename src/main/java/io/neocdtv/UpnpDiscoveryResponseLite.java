@@ -67,7 +67,7 @@ public class UpnpDiscoveryResponseLite extends Thread {
             receivedMessage.contains(UpnpHelper.MEDIA_RENDERER)) {
           final String discoveryResponse =
               UpnpPayloadFactory.create(uuid).createLeanPlayerDiscoveryResponse(
-                  LocationHelper.buildLocation(baseUrl), // TODO: currently not used at all
+                  LocationHelper.buildLocation(baseUrl),
                   LeanPlayerConstants.NAME,
                   LocationHelper.buildControlLocation(baseUrl),
                   LocationHelper.buildEventsLocation(baseUrl));
