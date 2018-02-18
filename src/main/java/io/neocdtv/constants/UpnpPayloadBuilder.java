@@ -33,8 +33,7 @@ public class UpnpPayloadBuilder {
         append("HTTP/1.1").
         append(" ").
         append(status).
-        // TODO: is OK at the end of the header required???
-            append(NEW_LINE);
+        append(NEW_LINE);
     return this;
   }
 
@@ -81,7 +80,6 @@ public class UpnpPayloadBuilder {
   public UpnpPayloadBuilder nts(final String st) {
     return addHeader(GenaConstants.HTTP_HEADER_NAME_NOTIFICATION_SUB_TYPE, st);
   }
-
 
   public String build() {
     return response.

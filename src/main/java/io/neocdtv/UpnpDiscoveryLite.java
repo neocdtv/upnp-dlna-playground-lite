@@ -71,31 +71,12 @@ public class UpnpDiscoveryLite extends Thread {
         // TODO: is device address getting from packet.getAddress().getHostAddress() and adding to location, controlLocation, eventsLocation
         // or get just the absolute addresses in location, controlLocation, eventsLocation
         String deviceAddress = packet.getAddress().getHostAddress();
-        final String deviceName = extractDeviceName(receivedMessage);
-        final String controlLocation = extractControlLocation(receivedMessage);
-        final String eventsLocation = extractEventsLocation(receivedMessage);
 
-          if (receivedMessage.contains(UpnpHelper.MEDIA_RENDERER) &&
-              receivedMessage.contains(LeanPlayerConstants.HTTP_HEADER_NAME_CONTROL_LOCATION) &&
-              receivedMessage.contains(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION)) {
-            eventsHandler.onDeviceDiscovery(deviceName, controlLocation, eventsLocation);
-          }
+        eventsHandler.onDeviceDiscovery(receivedMessage);
       }
     } catch (IOException ex) {
       Logger.getLogger(UpnpDiscoveryLite.class.getName()).log(Level.SEVERE, null, ex);
     }
-  }
-
-  private String extractDeviceName(final String receivedMessage) {
-    return HeaderHelper.extractHeader(HttpConstants.HTTP_HEADER_NAME_SERVER, receivedMessage);
-  }
-
-  private String extractControlLocation(final String receivedMessage) {
-    return HeaderHelper.extractHeader(LeanPlayerConstants.HTTP_HEADER_NAME_CONTROL_LOCATION, receivedMessage);
-  }
-
-  private String extractEventsLocation(final String receivedMessage) {
-    return HeaderHelper.extractHeader(LeanPlayerConstants.HTTP_HEADER_NAME_EVENTS_LOCATION, receivedMessage);
   }
 
   private String receiveMessage(DatagramSocket msocket, byte[] bytes, DatagramPacket packet) throws IOException {
