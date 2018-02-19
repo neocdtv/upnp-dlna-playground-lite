@@ -8,5 +8,6 @@ package io.neocdtv;
  */
 public interface EventsHandler {
   void onDeviceDiscovery(
-      final String payload);
+      final String payload,
+      final String deviceAddress);
 }

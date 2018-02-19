@@ -49,7 +49,7 @@ public class UpnpListenForNotifyLite extends Thread {
         TrafficLogger.logReceived(receivedMessage);
 
         if (receivedMessage.contains(GenaConstants.HTTP_METHOD_NOTIFY)) {
-          eventsHandler.onDeviceDiscovery(receivedMessage);
+          eventsHandler.onDeviceDiscovery(receivedMessage, packet.getAddress().getHostAddress());
         }
       }
     } catch (IOException ex) {

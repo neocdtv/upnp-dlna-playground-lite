@@ -1,9 +1,5 @@
 package io.neocdtv;
 
-import io.neocdtv.constants.GenaConstants;
-import io.neocdtv.constants.HeaderHelper;
-import io.neocdtv.constants.HttpConstants;
-import io.neocdtv.constants.LeanPlayerConstants;
 import io.neocdtv.constants.NetworkConstants;
 import io.neocdtv.constants.SsdpConstants;
 import io.neocdtv.constants.UpnpHelper;
@@ -68,11 +64,7 @@ public class UpnpDiscoveryLite extends Thread {
         final String receivedMessage = receiveMessage(datagramSocket, bytes, packet);
         TrafficLogger.logReceived(receivedMessage);
 
-        // TODO: is device address getting from packet.getAddress().getHostAddress() and adding to location, controlLocation, eventsLocation
-        // or get just the absolute addresses in location, controlLocation, eventsLocation
-        String deviceAddress = packet.getAddress().getHostAddress();
-
-        eventsHandler.onDeviceDiscovery(receivedMessage);
+        eventsHandler.onDeviceDiscovery(receivedMessage, packet.getAddress().getHostAddress());
       }
     } catch (IOException ex) {
       Logger.getLogger(UpnpDiscoveryLite.class.getName()).log(Level.SEVERE, null, ex);
