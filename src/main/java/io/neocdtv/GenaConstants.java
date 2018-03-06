@@ -1,4 +1,4 @@
-package io.neocdtv.constants;
+package io.neocdtv;
 
 /**
  * GenaConstants.

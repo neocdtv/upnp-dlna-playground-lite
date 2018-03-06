@@ -1,9 +1,5 @@
 package io.neocdtv;
 
-import io.neocdtv.constants.GenaConstants;
-import io.neocdtv.constants.NetworkConstants;
-import io.neocdtv.constants.SsdpConstants;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;

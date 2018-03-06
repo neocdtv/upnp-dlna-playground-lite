@@ -1,10 +1,5 @@
 package io.neocdtv;
 
-import io.neocdtv.constants.NetworkConstants;
-import io.neocdtv.constants.SsdpConstants;
-import io.neocdtv.constants.UpnpHelper;
-import io.neocdtv.constants.UpnpPayloadFactory;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;

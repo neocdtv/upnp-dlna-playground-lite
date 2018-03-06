@@ -1,4 +1,4 @@
-package io.neocdtv.constants;
+package io.neocdtv;
 
 import java.util.UUID;
 
