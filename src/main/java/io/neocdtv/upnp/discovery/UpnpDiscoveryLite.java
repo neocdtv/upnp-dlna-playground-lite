@@ -1,4 +1,4 @@
-package io.neocdtv;
+package io.neocdtv.upnp.discovery;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -17,22 +17,22 @@ import java.util.logging.Logger;
  */
 public class UpnpDiscoveryLite extends Thread {
 
-  private EventsHandler eventsHandler;
+  private DeviceDiscoveryEventsHandler deviceDiscoveryEventsHandler;
   private String uuid;
 
   public static void main(String[] args) throws InterruptedException {
     startIt(new EventsHandlerDefault(), UpnpHelper.buildUuid());
   }
 
-  public static void startIt(final EventsHandler eventsHandler, final String uuid) {
+  public static void startIt(final DeviceDiscoveryEventsHandler deviceDiscoveryEventsHandler, final String uuid) {
     UpnpDiscoveryLite upnpDiscoveryLite = new UpnpDiscoveryLite();
-    upnpDiscoveryLite.setEventsHandler(eventsHandler);
+    upnpDiscoveryLite.setDeviceDiscoveryEventsHandler(deviceDiscoveryEventsHandler);
     upnpDiscoveryLite.setUuid(uuid);
     upnpDiscoveryLite.start();
   }
 
-  public void setEventsHandler(EventsHandler eventsHandler) {
-    this.eventsHandler = eventsHandler;
+  public void setDeviceDiscoveryEventsHandler(DeviceDiscoveryEventsHandler deviceDiscoveryEventsHandler) {
+    this.deviceDiscoveryEventsHandler = deviceDiscoveryEventsHandler;
   }
 
   public void setUuid(String uuid) {
@@ -59,7 +59,7 @@ public class UpnpDiscoveryLite extends Thread {
         final String receivedMessage = receiveMessage(datagramSocket, bytes, packet);
         TrafficLogger.logReceived(receivedMessage);
 
-        eventsHandler.onDeviceDiscovery(receivedMessage, packet.getAddress().getHostAddress());
+        deviceDiscoveryEventsHandler.onDeviceDiscovery(receivedMessage, packet.getAddress().getHostAddress());
       }
     } catch (IOException ex) {
       Logger.getLogger(UpnpDiscoveryLite.class.getName()).log(Level.SEVERE, null, ex);

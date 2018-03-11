@@ -1,4 +1,4 @@
-package io.neocdtv;
+package io.neocdtv.upnp.discovery;
 
 import java.util.logging.Logger;
 
@@ -8,7 +8,7 @@ import java.util.logging.Logger;
  * @author xix
  * @since 21.12.17
  */
-public class EventsHandlerDefault implements EventsHandler {
+public class EventsHandlerDefault implements DeviceDiscoveryEventsHandler {
 
   private final static Logger LOGGER = Logger.getLogger(EventsHandlerDefault.class.getName());
 

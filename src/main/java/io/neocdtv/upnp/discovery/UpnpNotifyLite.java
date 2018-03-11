@@ -1,4 +1,4 @@
-package io.neocdtv;
+package io.neocdtv.upnp.discovery;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

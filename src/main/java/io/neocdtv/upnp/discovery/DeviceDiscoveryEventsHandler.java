@@ -1,4 +1,4 @@
-package io.neocdtv;
+package io.neocdtv.upnp.discovery;
 
 /**
  * EventsHandler.
@@ -6,7 +6,7 @@ package io.neocdtv;
  * @author xix
  * @since 21.12.17
  */
-public interface EventsHandler {
+public interface DeviceDiscoveryEventsHandler {
   void onDeviceDiscovery(
       final String payload,
       final String deviceAddress);

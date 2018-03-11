@@ -1,4 +1,4 @@
-package io.neocdtv;
+package io.neocdtv.upnp.discovery;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

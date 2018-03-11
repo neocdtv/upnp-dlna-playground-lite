@@ -1,4 +1,4 @@
-package io.neocdtv;
+package io.neocdtv.upnp.discovery;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -15,16 +15,16 @@ import java.util.logging.Logger;
  */
 public class UpnpListenForNotifyLite extends Thread {
 
-  private EventsHandler eventsHandler;
+  private DeviceDiscoveryEventsHandler deviceDiscoveryEventsHandler;
 
-  public static void startIt(final EventsHandler eventsHandler) {
+  public static void startIt(final DeviceDiscoveryEventsHandler deviceDiscoveryEventsHandler) {
     UpnpListenForNotifyLite upnpListenForNotifyLite = new UpnpListenForNotifyLite();
-    upnpListenForNotifyLite.setEventsHandler(eventsHandler);
+    upnpListenForNotifyLite.setDeviceDiscoveryEventsHandler(deviceDiscoveryEventsHandler);
     upnpListenForNotifyLite.start();
   }
 
-  public void setEventsHandler(EventsHandler eventsHandler) {
-    this.eventsHandler = eventsHandler;
+  public void setDeviceDiscoveryEventsHandler(DeviceDiscoveryEventsHandler deviceDiscoveryEventsHandler) {
+    this.deviceDiscoveryEventsHandler = deviceDiscoveryEventsHandler;
   }
 
   @Override
@@ -45,7 +45,7 @@ public class UpnpListenForNotifyLite extends Thread {
         TrafficLogger.logReceived(receivedMessage);
 
         if (receivedMessage.contains(GenaConstants.HTTP_METHOD_NOTIFY)) {
-          eventsHandler.onDeviceDiscovery(receivedMessage, packet.getAddress().getHostAddress());
+          deviceDiscoveryEventsHandler.onDeviceDiscovery(receivedMessage, packet.getAddress().getHostAddress());
         }
       }
     } catch (IOException ex) {
