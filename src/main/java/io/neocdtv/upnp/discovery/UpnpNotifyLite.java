@@ -37,6 +37,8 @@ public class UpnpNotifyLite {
   public void sendNotification() {
 
     try {
+      // TODO: which is interface is used here?? InetAddress.getByName(SsdpConstants.MULTICAST_IP)
+      // TODO: it is desireable to be able to send notifications on lo-interface also (loopback)
       InetAddress broadcastAddress = InetAddress.getByName(SsdpConstants.MULTICAST_IP);
       final DatagramSocket datagramSocket = new DatagramSocket();
       datagramSocket.setBroadcast(true);
